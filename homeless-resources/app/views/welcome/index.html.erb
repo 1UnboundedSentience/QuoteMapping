@@ -1,7 +1,7 @@
 <div class="container">
   <div class="jumbotron">
     <h1>Homeless Helper</h1>
-    <p>Find nearby homeless shelters</p>
+    <p>This is going to be my Waze for helping homeless</p>
   </div>
 </div>
 
@@ -26,17 +26,25 @@ handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
         "height": 36
       },
       "infowindow": "hello!"
-    }
+    },
+    { lat: 37.7833, lng: -122.4167},
+    { lat: 37.7733, lng: -122.4167},
+    { lat: 37.7633, lng: -122.4167},
+    { lat: 37.7533, lng: -122.4167},
+    { lat: 37.7433, lng: -122.4167}
   ]);
   handler.bounds.extendWith(markers);
   handler.fitMapToBounds();
   handler.getMap().setZoom(11);
+//   google.maps.event.addListener(map, 'click', function( event ){
+//   alert( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+// });
 });
 
 function initialize() {
   var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
   var mapOptions = {
-    zoom: 4,
+    zoom: 5,
     center: myLatlng
   }
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
