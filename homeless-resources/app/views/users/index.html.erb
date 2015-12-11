@@ -20,34 +20,53 @@
   <%= quote.language %> <br>
   <%= quote.date %> <br><br>
 <% end %>
+
 <%= javascript_tag do %>
 var quotes = <%= @quotes.to_json.html_safe %>
-var quotesCount = quotes.length
-debugger
+//debugger
 handler = Gmaps.build('Google');
+var address = quotes[0].neighborhood + " Washington, DC";
 var washDC = {lat: 38.8951, lng: -77.0367}
 var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 9,
     center: washDC
   });
-//actual content goes here
-// loop through db stuff
-//
 
-   var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-    '<div id="bodyContent">'+
-    '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-    'sandstone rock formation in the southern part of the '+
-    'Northern Territory' +
-    '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-    'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-    '(last visited June 22, 2009).</p>'+
-    '</div>'+
-    '</div>';
-    //for(var i = 0; i<quotesCount; i++) {
+debugger
+//for(var i = 0; i<quotes.length; i++) {
+  geocoder = new google.maps.Geocoder();
+  var latlng = new google.maps.LatLng(-34.397, 150.644);
+
+  if (geocoder) {
+      geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+          map.setCenter(results[0].geometry.location);
+
+            var infowindow = new google.maps.InfoWindow(
+                { content: '<b>'+address+'</b>',
+                  size: new google.maps.Size(150,50)
+                });
+
+            var marker = new google.maps.Marker({
+                position: results[0].geometry.location,
+                map: map,
+                title:address
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+
+          } else {
+            alert("No results found");
+          }
+        } else {
+          alert("Geocode was not successful for the following reason: " + status);
+        }
+      });
+    }
+//}
+    //for(var i = 0; i<quotes.length; i++) {
       var infowindow = new google.maps.InfoWindow({
       content: quotes[0].content + "<br>Neighborhood:" + quotes[0].neighborhood + "<br>Theme:" +quotes[0].theme
       });
