@@ -13,14 +13,17 @@
 </div>
 
 <% @quotes.each do |quote| %>
-  <%= content_tag('pre', quote.content) %> <br>
+  <%= content_tag('pre', quote.content) %>
   <%= quote.neighborhood %> <br>
   <%= quote.theme %> <br>
   <%= quote.theme2 %> <br>
   <%= quote.language %> <br>
   <%= quote.date %> <br><br>
 <% end %>
-<script>
+<%= javascript_tag do %>
+var quotes = <%= @quotes.to_json.html_safe %>
+var quotesCount = quotes.length
+debugger
 handler = Gmaps.build('Google');
 var washDC = {lat: 38.8951, lng: -77.0367}
 var map = new google.maps.Map(document.getElementById('map'), {
@@ -44,23 +47,23 @@ var map = new google.maps.Map(document.getElementById('map'), {
     '(last visited June 22, 2009).</p>'+
     '</div>'+
     '</div>';
-    var infowindow = new google.maps.InfoWindow({
-    content: contentString
-    });
-    var marker = new google.maps.Marker({
-      position: washDC,
-      map: map,
-      title: 'DC Quotes Pop Up'
-    });
-    marker.addListener('mouseover', function() {
-      //debugger
-      infowindow.open(map, marker);
-    });
+    //for(var i = 0; i<quotesCount; i++) {
+      var infowindow = new google.maps.InfoWindow({
+      content: quotes[0].content + "<br>Neighborhood:" + quotes[0].neighborhood + "<br>Theme:" +quotes[0].theme
+      });
+      var marker = new google.maps.Marker({
+        position: washDC,
+        map: map,
+        title: 'DC Quotes Pop Up'
+      });
+      marker.addListener('mouseover', function() {
+        //debugger
+        infowindow.open(map, marker);
+      });
+    //}
     //handler.bounds.extendWith(markers);
 //   google.maps.event.addListener(map, 'click', function( event ){
 //   alert( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
 // });
 //});
-
-
-</script>
+<% end %>

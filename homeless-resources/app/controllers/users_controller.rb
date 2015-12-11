@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  def new
-    @user = User.new
+  def index
+    @quotes = Quote.all
+    @num_quotes = Quote.count
   end
 end
