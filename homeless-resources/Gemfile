@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'gmaps4rails'
 
+gem 'factory_girl'
+
+gem "rails3-generators"
+
 gem 'underscore-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
